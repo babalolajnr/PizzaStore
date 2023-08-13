@@ -4,12 +4,15 @@ using PizzaStore.DB;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var connectionString = builder.Configuration.GetConnectionString("PizzaDB") ?? "Data Source=pizza.db";
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "PizzaStore API", Description = "PizzaStore APIs", Version = "v1" });
 });
-builder.Services.AddDbContext<PizzaDB>(options => options.UseInMemoryDatabase("PizzaDB"));
+
+builder.Services.AddSqlite<PizzaDB>(connectionString);
 
 var app = builder.Build();
 
